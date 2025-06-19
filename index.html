@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Materi Belajar Web3 Developer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[#111827] p-6 text-white">
+  <div class="max-w-5xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8 text-center">
+      Materi Belajar Web3 Developer
+    </h1>
+    <div id="materi-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+  </div>
+  <script src="modules.js"></script>
+  <script>
+    const list = document.getElementById('materi-list');
+    modules.forEach((mod, i) => {
+      const link = document.createElement('a');
+      link.href = `week.html?id=${i+1}`;
+      link.className = "group bg-[#1F2937] p-5 rounded-2xl border border-gray-700 hover:border-purple-500 transition shadow-md hover:shadow-purple-500/50 cursor-pointer block";
+      link.innerHTML = `
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm text-gray-400">Materi ${i+1}</span>
+          <span class="text-xs bg-purple-600 text-white px-2 py-0.5 rounded-full">Modul</span>
+        </div>
+        <h2 class="text-xl font-semibold text-white group-hover:text-purple-400">${mod.topic}</h2>
+      `;
+      list.appendChild(link);
+    });
+  </script>
+</body>
+</html>

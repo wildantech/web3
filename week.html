@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Detail Materi Web3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+</head>
+<body class="min-h-screen bg-[#111827] p-6 text-white">
+  <div class="max-w-3xl mx-auto bg-[#1F2937] rounded-2xl p-6 shadow-lg mt-8">
+    <a href="index.html" class="text-purple-400 hover:underline mb-4 inline-block">&larr; Kembali ke Daftar Materi</a>
+    <h1 id="judul" class="text-3xl font-bold mb-4"></h1>
+    <div id="konten"></div>
+    <div id="sheet-content" class="mt-8"></div>
+    <div class="flex justify-between mt-10">
+      <a id="prev" class="text-purple-400 hover:underline"></a>
+      <a id="next" class="text-purple-400 hover:underline"></a>
+    </div>
+  </div>
+  <script>
+    // Data modules (topik)
+    const modules = [
+  { topic: "Lesson 0–2: Welcome & Blockchain Basics" },
+  { topic: "Lesson 3: Remix Storage Factory" },
+  { topic: "Lesson 4: Remix Fund Me" },
+  { topic: "Lesson 5: Ethers.js Simple Storage" },
+  { topic: "Lesson 6: Hardhat Simple Storage" },
+  { topic: "Lesson 7: Hardhat Fund Me" },
+  { topic: "Lesson 8: HTML / Javascript Fund Me" },
+  { topic: "Lesson 9: Hardhat Smart Contract Lottery" },
+  { topic: "Lesson 10: NextJS Smart Contract Lottery" },
+  { topic: "Lesson 11: Hardhat Starter Kit" },
+  { topic: "Lesson 12: Hardhat ERC20s" },
+  { topic: "Lesson 13: Hardhat DeFi & Aave" },
+  { topic: "Lesson 14: Hardhat NFTs" },
+  { topic: "Lesson 15: NextJS NFT Marketplace" },
+  { topic: "Lesson 16: Hardhat Upgrades" },
+  { topic: "Lesson 17: Hardhat DAOs" },
+  { topic: "Lesson 18: Security & Auditing" },
+];
+
+    // Konten materi per minggu (copy dari moduleContents)
+    const moduleContents = {
+      "1": `
+        <p><strong>Lesson 0: Welcome To Blockchain</strong></p>
+        <p>Pengenalan blockchain
+          Video dimulai dengan pengantar konsep blockchain—sebuah sistem pencatatan transaksi digital yang transparan, aman, dan tidak bisa diubah. Blockchain adalah pondasi utama dari teknologi Web3.
+        </p>
+        <p><strong>Lesson 1: Blockchain Basics</strong></p>
+        <p>Penjelasan blok, hash, proof‑of‑work
+          Pada bagian ini dijelaskan konsep-konsep dasar seperti blok, hash, proof of work, dan cara blok saling terhubung membentuk rantai data. Kamu akan memahami mengapa blockchain sangat aman dan andal dalam mencatat transaksi.
+        </p>
+        <p><strong>Lesson 2: Remix Simple Storage</strong></p>
+        <p>Belajar IDE Remix
+          Remix adalah IDE online untuk menulis dan menjalankan smart contract menggunakan bahasa Solidity. Lesson ini mengajarkan kamu cara menulis kontrak sederhana untuk menyimpan dan mengambil data dari blockchain.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=0&end=10875" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "2": `
+        <p>Membuat kontrak penyimpanan dinamis.
+          Pada lesson ini kamu akan membuat kontrak Solidity yang mampu menghasilkan banyak kontrak penyimpanan sederhana secara dinamis. Kamu akan memahami pola Factory dalam pengembangan smart contract.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=11134&end=12715" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "3": `
+        <p>Kontrak donasi & tarik dana.
+          Di bagian ini, kamu akan belajar membuat smart contract yang menerima ETH dari pengguna dan hanya dapat ditarik oleh pemiliknya. Ini memperkenalkan konsep pembayaran dan pengelolaan dana di dalam blockchain.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=12715&end=19842" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "4": `
+        <p>Ethers.js untuk interaksi kontrak.
+          Pelajari bagaimana menggunakan library Ethers.js untuk berinteraksi dengan smart contract dari luar blockchain. Ini mencakup koneksi ke jaringan Ethereum, membaca dan menulis data ke kontrak menggunakan JavaScript.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=19842&end=30017" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "5": `
+        <p>Deploy & testing lokal pakai Hardhat.
+          Kita mulai menggunakan Hardhat—alat pengembangan yang kuat untuk smart contract. Kamu akan belajar membuat proyek, menulis kontrak Solidity, serta melakukan deploy dan testing secara lokal.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=30017&end=36048" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "6": `
+        <p>Smart contract crowdfunding.
+          Pelajari bagaimana membuat dan menguji smart contract crowdfunding yang menerima dan menarik dana menggunakan Hardhat. Kamu juga akan belajar menggunakan mock dan script testing otomatis.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=36048&end=45177" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "7": `
+        <p>Frontend interaksi kontrak Fund Me.
+          Di sini kamu membangun frontend menggunakan HTML dan JavaScript untuk berinteraksi dengan kontrak Fund Me. Ini adalah transisi dari backend ke pengembangan aplikasi blockchain full-stack sederhana.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=45177&end=49262" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "8": `
+        <p>Lotere dengan Chainlink VRF.
+          Membangun sistem lotere berbasis smart contract menggunakan Hardhat. Di lesson ini kamu akan belajar randomness, chainlink VRF, dan integrasi dengan Chainlink Oracle.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=49262&end=59647" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "9": `
+        <p>Frontend Lottery dengan Next.js.
+          Lesson ini memperluas lotere ke sisi frontend menggunakan framework Next.js. Kamu akan belajar rendering sisi server, API routes, dan koneksi ke smart contract dari aplikasi NextJS.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=59647&end=68196" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "10": `
+        <p>Setup modular project structure.
+          Pada lesson ini kamu akan diajak membuat struktur proyek yang lebih modular menggunakan Hardhat Starter Kit. Ini akan mempermudah pengelolaan testing, deployment, dan integrasi dengan library seperti Ethers.js dan dotenv.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=68196&end=68364" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "11": `
+        <p>Standar token ERC‑20.
+          Kamu akan belajar membuat dan mengelola token ERC-20 di Ethereum. Ini termasuk fungsi-fungsi standar seperti transfer, approve, dan allowance. ERC20 adalah standar token yang digunakan di berbagai proyek DeFi.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=68364&end=69373" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "12": `
+        <p>Integrasi dengan protokol Aave.
+          Mempelajari konsep DeFi (Decentralized Finance) dan integrasi dengan protokol peminjaman Aave. Kamu akan berinteraksi dengan kontrak Aave menggunakan Ethers.js dan memahami cara meminjam/menyimpan aset kripto.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=69373&end=73731" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "13": `
+        <p>Standard ERC‑721 & metadata.
+          Kamu akan belajar membuat dan mengelola NFT (Non-Fungible Token) menggunakan standar ERC-721. Ini termasuk metadata, URI, dan penyimpanan konten digital secara on-chain dan off-chain.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=73731&end=85223" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "14": `
+        <p>Membangun marketplace NFT end-to-end.Lesson ini membimbing kamu membuat marketplace NFT dari frontend hingga backend menggunakan Next.js dan Solidity. Kamu akan belajar mencantumkan NFT untuk dijual, membeli, serta menampilkan koleksi.</p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=85223&end=103991" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "15": `
+        <p>Smart contract yang bisa di-upgrade.Pelajari bagaimana membangun smart contract yang dapat diperbarui (upgradable contract) menggunakan OpenZeppelin dan plugin upgrade dari Hardhat. Kamu akan belajar menjaga state dan logika secara terpisah.</p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=103991&end=107124" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "16": `
+        <p>Membangun DAO dengan governance token.
+          Lesson ini mengajarkan pembuatan DAO (Decentralized Autonomous Organization) dengan sistem voting dan kepemilikan token. DAOs memungkinkan pengambilan keputusan bersama secara otomatis.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=107124&end=113112" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `,
+      "17": `
+        <p>Keamanan smart contract, reentrancy, overflow.
+          Lesson terakhir membahas cara mengamankan smart contract dan prinsip-prinsip auditing. Kamu akan mengenal berbagai jenis serangan seperti reentrancy dan integer overflow serta mitigasinya.
+        </p>
+        <div class="aspect-video rounded-xl overflow-hidden shadow-lg">
+          <iframe src="https://www.youtube.com/embed/gyMwXuJrbJQ?start=113112&end=113112" class="w-full h-full" allowfullscreen></iframe>
+        </div>
+      `
+    };
+
+    // Ambil id dari query string
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const weekIndex = parseInt(id, 10) - 1;
+    const module = modules[weekIndex];
+
+    // Judul
+    document.getElementById('judul').textContent = module ? module.topic : "Materi tidak ditemukan";
+
+    // Konten video
+    document.getElementById('konten').innerHTML = moduleContents[id] || `<p class="text-gray-400">Materi video belum tersedia untuk lesson ini.</p>`;
+
+    // Fetch materi dari Google Sheet (CSV)
+fetch('https://api.sheetbest.com/sheets/542c5e55-5fb6-4c47-84bf-d3d9e7a17bf3')
+  .then(res => res.json())
+  .then(data => {
+    console.log('id dari URL:', id);
+    console.log('data dari sheet.best:', data);
+    // id di Sheet.best biasanya string, jadi pakai == dan trim
+    const row = data.find(item => item.id && item.id.toString().trim() == id.toString().trim());
+    if (row) {
+      document.getElementById('sheet-content').innerHTML = `
+        <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+          <h2 class="text-2xl font-semibold mb-2 text-purple-300">Materi Dalam Video</h2>
+          <p class="text-gray-200 whitespace-pre-wrap">${row.materi}</p>
+        </div>
+      `;
+    } else {
+      document.getElementById('sheet-content').innerHTML = `<p class="text-gray-400">Materi belum tersedia untuk lesson ini.</p>`;
+    }
+  })
+  .catch(() => {
+    document.getElementById('sheet-content').innerHTML = `<p class="text-red-400">Gagal mengambil data dari Sheet.best.</p>`;
+  });
+
+
+
+    // Navigasi
+    const prevId = weekIndex > 0 ? `${weekIndex}` : null;
+    const nextId = weekIndex < modules.length - 1 ? `${weekIndex + 2}` : null;
+    if (prevId) {
+      document.getElementById('prev').href = `week.html?id=${prevId}`;
+      document.getElementById('prev').textContent = "← Lesson Sebelumnya";
+    }
+    if (nextId) {
+      document.getElementById('next').href = `week.html?id=${nextId}`;
+      document.getElementById('next').textContent = "Lesson Berikutnya →";
+    }
+  </script>
+</body>
+</html>
